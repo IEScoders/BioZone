@@ -2,7 +2,6 @@ import os
 from flask import Flask, render_template, url_for
 
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 flask_app = Flask(__name__)
 
 posts_data = [
@@ -33,9 +32,9 @@ def about():
 
 # On IBM Cloud Cloud Foundry, get the port number from the environment variable PORT
 # When running this app on the local machine, default the port to 8000
-port = int(os.getenv('PORT', 8000))
+# port = int(os.getenv('PORT', 8000))
 
 
 
 if __name__=="__main__":
-    flask_app.run(host='0.0.0.0', port=port, debug=True)
+    flask_app.run(debug=True)
