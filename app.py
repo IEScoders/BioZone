@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, url_for
 
 
-flask_app = Flask(__name__)
+app = Flask(__name__)
 
 posts_data = [
     {
@@ -20,13 +20,13 @@ posts_data = [
 ]
 app_title="AGTHON 2018"
 ## Home page Route
-@flask_app.route('/')
-@flask_app.route('/home')
+@app.route('/')
+@app.route('/home')
 def home():
     return render_template('home.html',posts=posts_data, app_title=app_title)
 
 ## About Page Route
-@flask_app.route('/about')
+@app.route('/about')
 def about():
     return render_template('about.html',title="About", app_title=app_title)
 
@@ -37,4 +37,4 @@ def about():
 
 
 if __name__=="__main__":
-    flask_app.run(debug=True)
+    app.run(debug=True)
