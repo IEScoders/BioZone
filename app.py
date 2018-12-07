@@ -21,40 +21,41 @@ from numpy.random import random
 
 
 feature_names=["Sepal Length", "Sepal Width", "Petal Length", "Petal Width", "Species"]
-df=pd.read_csv('CWB_Stations_171226.csv')
-df.columns=["id","name","ele","x","y","city","address","資料起始日期","撤站日期","備註","原站號","新站號"]
-psource = ColumnDataSource(df)
+df=pd.read_csv('EI_result/2010-01_achatina_fulica.csv')
+# df.columns=["id","name","ele","x","y","city","address","資料起始日期","撤站日期","備註","原站號","新站號"]
+df.columns=["Index","EI","id","x","y"]
+# psource = ColumnDataSource(df)
 
-# x=df['x'].values
-# y=df['y'].values
-# elevations=df['ele'].values
-# source=ColumnDataSource(
-#     data=dict(
-#         x=x,
-#         y=y,
-#         elev=elevations,
-#     )
-# )
+x=df['x'].values
+y=df['y'].values
+EIvals=df['EI'].values
+psource=ColumnDataSource(
+    data=dict(
+        x=x,
+        y=y,
+        EIvals=EIvals,
+    )
+)
 
-low=math.floor(np.min(df['ele'].values))
-high=math.ceil(np.max(df['ele'].values))
-mapper=LinearColorMapper(palette=Viridis256,low=low, high=high)
+# low=math.floor(np.min(df['EI'].values))
+# high=math.ceil(np.max(df['EI'].values))
+mapper=LinearColorMapper(palette=Viridis256,low=0, high=1)
 color_bar=ColorBar(color_mapper=mapper,location=(0,0))
 # lat_vals=df["lat"].values
 # long_vals=df["long"].values
 
-def create_google_map(plotsource=psource):
-    map_options = GMapOptions(lat=23.5, lng=121.0, map_type="terrain", zoom=7)
-    p = gmap("AIzaSyDqpIUEhtFIX53RPKR5QX0gi8QdyRZh0NQ", map_options, title="EI Plot",plot_width=500, plot_height=500)
-    # p=GMapPlot(map_options=map_options,api_key='AIzaSyDqpIUEhtFIX53RPKR5QX0gi8QdyRZh0NQ')
-    # p.title.text="EI Plot"
-    # p = figure(plot_width=500, plot_height=500,title="EI Plot", toolbar_location="right",tools="pan,box_zoom,reset")
-    my_hover = HoverTool()
-    my_hover.tooltips = [('Name', '@name'), ('Elevation', '@ele'), ('City', '@city'),('Address of the station', '@address')]
-    p.circle('x', 'y',source=plotsource, size=5, line_color="black", fill_color={'field':'ele','transform':mapper}, fill_alpha=0.5)
-    p.add_tools(my_hover)
-    # p.add_layout(color_bar, 'right')
-    return p
+# def create_google_map(plotsource=psource):
+#     map_options = GMapOptions(lat=23.5, lng=121.0, map_type="terrain", zoom=7)
+#     p = gmap("AIzaSyDqpIUEhtFIX53RPKR5QX0gi8QdyRZh0NQ", map_options, title="EI Plot",plot_width=500, plot_height=500)
+#     # p=GMapPlot(map_options=map_options,api_key='AIzaSyDqpIUEhtFIX53RPKR5QX0gi8QdyRZh0NQ')
+#     # p.title.text="EI Plot"
+#     # p = figure(plot_width=500, plot_height=500,title="EI Plot", toolbar_location="right",tools="pan,box_zoom,reset")
+#     my_hover = HoverTool()
+#     my_hover.tooltips = [('EI Value', '@EI'), ('Latitude', '@lat'), ('City', '@city'),('Address of the station', '@address')]
+#     p.circle('x', 'y',source=plotsource, size=5, line_color="black", fill_color={'field':'ele','transform':mapper}, fill_alpha=0.5)
+#     p.add_tools(my_hover)
+#     # p.add_layout(color_bar, 'right')
+#     return p
 
 
 # Create the main plot
@@ -98,19 +99,21 @@ def analysis():
     current_feature_name = request.args.get("feature_name")
     if current_feature_name == None:
         current_feature_name = "Sepal Length"
+
+
     map_options = GMapOptions(lat=23.5, lng=121.0, map_type="terrain", zoom=7)
     p = gmap("AIzaSyDqpIUEhtFIX53RPKR5QX0gi8QdyRZh0NQ", map_options, title="EI Plot",plot_width=500, plot_height=500)
     my_hover = HoverTool()
-    my_hover.tooltips = [('Name', '@name'), ('Elevation', '@ele'), ('City', '@city'),('Address of the station', '@address')]
-    p.circle('x', 'y',source=psource, size=5, line_color="black", fill_color={'field':'ele','transform':mapper}, fill_alpha=0.5)
+    my_hover.tooltips = [('EI Value', '@EIvals'), ('Latitude', '@y'), ('Longitude', '@x')]
+    p.circle('x', 'y',source=psource, size=5, line_color="black", fill_color={'field':'EIvals','transform':mapper}, fill_alpha=0.5)
     p.add_tools(my_hover)
 
-    N = 300
-    slider = Slider(start=1, end=1000, value=N,step=10, title='Number of points')
+    N = 0.5
+    slider = Slider(start=0, end=1, value=N,step=0.1, title='Number of points')
     # Add callback to widgets
     def callback(attr, old, new):
         N = slider.value
-        psource.data={'x': random(N), 'y': random(N)}
+        psource.data={'x': df['x'].values, 'y': df['y'].values}
     slider.on_change('value', callback) 
     # Arrange plots and widgets in layouts
     layout = row(slider, p) 
