@@ -1,11 +1,6 @@
 import os
 from flask import Flask, render_template, url_for
-# import dash
-# import flask
-# import dash_core_components as dcc
-# import dash_html_components as html
-# from werkzeug.serving import run_simple
-# from werkzeug.wsgi import DispatcherMiddleware
+
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 flask_app = Flask(__name__)
@@ -43,6 +38,4 @@ port = int(os.getenv('PORT', 8000))
 
 
 if __name__=="__main__":
-    # run_simple('localhost', 5000, application,
-    #            use_reloader=True, use_debugger=True, use_evalex=True)
     flask_app.run(host='0.0.0.0', port=port, debug=True)
