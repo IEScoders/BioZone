@@ -76,6 +76,7 @@ posts_data = [
     #     'date_posted': 'April 21, 2018'
     # }
 ]
+port = int(os.getenv('PORT', 8000))
 app_title="BioZone"
 ## Home page Route
 @app.route('/')
@@ -83,6 +84,14 @@ app_title="BioZone"
 def home():
     return render_template('home.html',posts=posts_data, app_title=app_title)
 
+
+@app.route('/ei_explain')
+def whatisei():
+    return render_template('whatisei.html', app_title=app_title)
+
+@app.route('/howtouse')
+def howtouse():
+    return render_template('howtouse.html', app_title=app_title)
 # # # Analysis Page Route
 @app.route('/analysis')
 def analysis():
@@ -109,7 +118,6 @@ def analysis():
     menu = Select(options=species_name,value="solenopsis_invicta", title='Select Bugs') 
     menu.on_change('value', slider_callback)
     yeardata_slider = Slider(start=2010, end=2017, value=2010, step=1,title="Year")
-    print(yeardata_slider.value)
     yeardata_slider.on_change('value', slider_callback) 
     monthdata_slider = Slider(start=1, end=12, value=1, step=1,title="Month")
     monthdata_slider.on_change('value', slider_callback)
@@ -127,4 +135,4 @@ def analysis():
 
 
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=port, debug=True)

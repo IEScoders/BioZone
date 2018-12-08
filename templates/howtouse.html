@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>How does Biozone use EI?</h1>
+
+<h2>BioZone如何使用氣候環境指數?</h2>
+
+<p>BioZone配合大眾使用習慣, 使用簡化後的EI模型, 其中僅考慮地面溫度(T)與降雨量(M)。這些環境資料主要擷取自中央氣象局全台500多個氣象站監測資料。物種適合生存的溫濕度環境參數主要取自農委會動植物防疫局與國際應用生物科學中心(CABI)所提供的資料庫。</p>
+
+<figure><img src="DraggedImage.tiff"/><img src="howtousebiozone2.png"/></figure>
+
+<h3>溫度參數 TI = Tmax · Tmin</h3>
+
+<p>dv0: 生物無法在低於此溫度生存</p>
+
+<p>dv1: 生物在低於此溫度較難發展</p>
+
+<p>dv2: 生物在高於此溫度較難發展</p>
+
+<p>dv3: 生物無法在高於此溫度生存</p>
+
+<h3>濕度參數MI </h3>
+
+<p>sm0: 生物無法在低於此濕度生存</p>
+
+<p>sm1: 生物在低於此濕度較難發展</p>
+
+<p>sm2: 生物在高於此濕度較難發展</p>
+
+<p>sm3: 生物無法在高於此濕度生存</p>
+
+<p>$簡化後氣候環境指數 EI = TI · MI$</p>
+
+<figure><img src="DraggedImage-1.tiff"/></figure>
+{% endblock content %}
