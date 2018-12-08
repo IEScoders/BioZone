@@ -1,6 +1,7 @@
+<!doctype html>
 <html>
 <head>
-<link
+    <link
     href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.16.min.css"
     rel="stylesheet" type="text/css">
 <link
@@ -19,14 +20,6 @@
 {% else %}
     <title>{{ app_title }}</title>
 {% endif %}
-<!-- {{ resources }}
-{{ script }}
-<style>
-    .embed-wrapper {
-        display: flex;
-        justify-content: space-evenly;
-    }
-</style> -->
 </head>
 <body>
     <header class="site-header">
@@ -52,10 +45,9 @@
         </nav>
       </header>
 <H1>Analysis</H1>
-<h4>Analysis Result for {{ species_name }}</h4>
-
-{{ script|safe }}
-{{ div|safe }}
-
+{% block content %}
+    {{ script|safe }}
+    {{ div|safe }}
+{% endblock content %}
 </body>
 </html>
