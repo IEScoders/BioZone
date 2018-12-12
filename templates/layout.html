@@ -46,7 +46,6 @@
                       </div>
                       <div class="col-md-4">
                         <div class="navbar-nav">
-                            <h5>Results and Analysis</h5>
                             <!-- <a class="nav-item nav-link" href="/english">English</a> -->
                             <ul class="list-group">
                               <a href="/howtouse" class="list-group-item list-group-item-action list-group-item-light">How to use the BioZone</a>
@@ -55,6 +54,90 @@
                               <!-- <li class="list-group-item list-group-item-light">Other Results</li>
                               <li class="list-group-item list-group-item-light">Crops Affected</li> -->
                             </ul>
+                            <p><ul class="list-group">
+                              <h5>Results and Analysis</h5>
+                              <script type="text/javascript">
+                                window.onload = function () {
+                                    //當頁面載完之後，用SpeciesList.Initialize()，
+                                    //傳入要綁定的縣市下拉選單ID及鄉鎮市區下拉選單ID
+                                    SpeciesList.Initialize('Crops', 'Pests');
+                              
+                                    //後面四個參數分別是兩個下拉選單的預設文字跟值
+                                  //  SpeciesList.Initialize('縣市2', '鄉鎮市區2', 'Please Select City', '0', 'Please Select Area', '0');
+                              }
+                              
+                              
+                              function show() {
+                                    //取出指定縣市及鄉鎮市區的下拉選單的值
+                                    alert(SpeciesList.ReturnSelectSpecies('Crops', 'Pests'));
+                                }
+                                
+                                var app = window.SpeciesList =
+                                {
+                                  // Sources:  重要農業害蟲診斷圖鑑, 行政院農委會開放資料平台
+                                  SpeciesArray: [ 
+                                                  ['Litchi', 'tetranychus', 'aleyrodidae', 'diaspididae', 'aphididae', 'pulvinaria_psidii', 'psylloidea', 'lepidoptera'],
+                                                  ['Guava', 'paracoccus_marginatus', 'aleurotuberculatus_guyavae', 'planococcus_minor', 'aleurodicus_dispersus', 'lepidoptera', 'aleurocanthus_spiniferus', 'saissetia_coffeae'],
+                                                  ['Papaya', 'paracoccus_marginatus', 'tetranychus_urticae', 'tetranychus', 'pseudococcidae'],
+                                                ]
+                                  ,              
+                                  SpeciesInChn: [
+                                                  ['荔枝', '葉蟎', '粉蝨', '盾介殼蟲', '蚜蟲', '黃綠綿介殼蟲', '木蝨', '鱗翅目'],
+                                                  ['芭樂', '木瓜秀粉介殼蟲', '番石榴黑疣粉蝨', '太平洋臀紋粉介殼蟲', '螺旋粉蝨', '鱗翅目', '柑橘刺粉蝨', '咖啡硬介殼蟲'],
+                                                  ['木瓜', '木瓜秀粉介殼蟲', '二點葉蟎', '葉蟎', '粉介殼蟲科'],
+                                                ]
+                                  ,
+                              
+                                  defaultOptionCropText: '請選擇作物',
+                                  defaultOptionCropValue: '',
+                                  defaultOptionPestText: '請選擇害蟲',
+                                  defaultOptionPestValue: '',
+                                  
+                                  Initialize: function (crop, pest, defaultCropText, defaultCropValue, defaultPestText, defaultPestValue) {
+                              
+                                      var cropText = defaultCropText ? defaultCropText : this.defaultOptionCropText;
+                                      var cropValue = defaultCropValue ? defaultCropValue : this.defaultOptionCropValue;
+                                      var pestText = defaultPestText ? defaultPestText : this.defaultOptionPestText;
+                                      var pestValue = defaultPestValue ? defaultPestValue : this.defaultOptionPestValue;
+                              
+                                      var cropSelect = document.getElementById(crop);
+                                      var pestSelect = document.getElementById(pest);
+                              
+                                      cropSelect.options[0] = new Option(cropText, cropValue);
+                                      pestSelect.options[0] = new Option(pestText, pestValue);
+                                      for (var i = 0; i < this.SpeciesArray.length; i++) {
+                                          cropSelect.options[i + 1] = new Option(this.SpeciesInChn[i][0], this.SpeciesArray[i][0]);
+                                      }
+                                      cropSelect.addEventListener ? cropSelect.addEventListener('change', function (e) { app.AppendPest(e, pestSelect, pestText, pestValue) }, false) : cropSelect.attachEvent('onchange', function (e) { app.AppendPest(e, pestSelect, pestText, pestValue) });
+                                  },
+                              
+                                  AppendPest: function (e, PestSelect, pestText, pestValue) {
+                                      var target = e.target ? e.target : e.srcElement;
+                                      if (target.selectedIndex == 0) {
+                                          PestSelect.options.length = 0;
+                                          PestSelect.options[0] = new Option(pestText, pestValue);
+                                          return;
+                                      }
+                                      PestSelect.options.length = this.SpeciesArray[target.selectedIndex - 1].length - 1;
+                                      for (var i = 1; i < this.SpeciesArray[target.selectedIndex - 1].length; i++) {
+                                          PestSelect.options[i - 1] = new Option(this.SpeciesInChn[target.selectedIndex - 1][i], this.SpeciesArray[target.selectedIndex - 1][i]);
+                                      }
+                                  },
+                              
+                                  ReturnSelectSpecies: function (crop, pest) {
+                                      var crop = document.getElementById(crop);
+                                      var pest = document.getElementById(pest);
+                                      return "?crop="+crop.value+"&pest="+pest.value;
+                                  }
+                              };
+                              
+                              </script>
+                              <select id="Crops" class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              </select>
+                              <select id="Pests" class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              </select>
+                              <input type="button" class="btn btn-success" onclick="show()" value="Show" />
+                            </ul></p>
                         </div> 
                         <!-- <div class="content-section">
                           <h6>Results and Analysis</h6>
