@@ -80,10 +80,9 @@ port = int(os.getenv('PORT', 8000))
 app_title="BioZone"
 ## Home page Route
 @app.route('/')
-@app.route('/home')
-def home():
-    return render_template('home.html',posts=posts_data, app_title=app_title)
-
+@app.route('/about')
+def about():
+    return render_template('about.html', app_title=app_title)
 
 @app.route('/ei_explain')
 def whatisei():
@@ -92,6 +91,11 @@ def whatisei():
 @app.route('/howtouse')
 def howtouse():
     return render_template('howtouse.html', app_title=app_title)
+
+@app.route('/links')
+def links():
+    return render_template('links.html', app_title=app_title)
+
 # # # Analysis Page Route
 @app.route('/analysis')
 def analysis():
