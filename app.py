@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 from bokeh.plotting import figure, gmap
 # from bokeh.resources import CDN
 # from bokeh.embed import file_html
@@ -11,7 +11,7 @@ from bokeh.palettes import Viridis256
 # import math
 import numpy as np
 from bokeh.layouts import widgetbox
-from bokeh.models.widgets import Dropdown
+from bokeh.models.widgets import Dropdown, TextInput, Div, Button
 # from bokeh.io import curdoc
 from bokeh.layouts import column,row
 # from numpy.random import random 
@@ -115,12 +115,22 @@ def analysis():
         )
         source.data = new1.data
 
+    # scientific_name=request.values['pest'] 
+    pest_name=request.values['pest'].title()
     menu = Select(options=species_name,value="solenopsis_invicta", title='Select Bugs') 
     menu.on_change('value', slider_callback)
     yeardata_slider = Slider(start=2010, end=2017, value=2010, step=1,title="Year")
     yeardata_slider.on_change('value', slider_callback) 
     monthdata_slider = Slider(start=1, end=12, value=1, step=1,title="Month")
     monthdata_slider.on_change('value', slider_callback)
+    crop =  Div(text="""<hr><p><h5>Possible Loss for <b>%s</b>:</h5></p>""" % request.values['crop'].title()) 
+    damage_slider = Slider(start=0, end=100, value=50, step=1,title="Loss Percentage")
+    # damage_slider.on_change('value', price_callback) 
+    croparea=TextInput(id="area", value="10", title="Farm Area (ha)")
+    cropyield=TextInput(id="yield", value="20000", title="Yield (kg/ha)")
+    cropprice=TextInput(id="price", value="50", title="Price (NT$/kg)")
+    loss=float(damage_slider.value)/100*float(croparea.value)*float(cropyield.value)*float(cropprice.value)
+    estimation = Div(text="""<p align="right" style="font-size:16px"><b>%s</b></p>""" % 'NT${:,.0f}'.format(loss))
 
     map_options = GMapOptions(lat=23.5, lng=121.0, map_type="terrain", zoom=7)
     p = gmap("AIzaSyDqpIUEhtFIX53RPKR5QX0gi8QdyRZh0NQ", map_options, title="EI Plot",plot_width=500, plot_height=500)
@@ -128,10 +138,10 @@ def analysis():
     my_hover.tooltips = [('EI Value', '@EIvals'), ('Latitude', '@y'), ('Longitude', '@x')]
     p.circle('x', 'y',source=source, size=8, line_color="black", fill_color={'field':'EIvals','transform':mapper}, fill_alpha=0.5)
     p.add_tools(my_hover)
-    layout = row(widgetbox(menu, yeardata_slider,monthdata_slider),p)
+    layout = row(widgetbox(menu, yeardata_slider,monthdata_slider,crop,damage_slider,croparea,cropyield,cropprice,estimation),p)
 
     script, div = components(layout)	
-    return render_template("analysis.html", script=script, div=div, app_title=app_title,species_name=menu.value)
+    return render_template("analysis.html", script=script, div=div, app_title=app_title,species_name=pest_name)
 
 
 if __name__=="__main__":

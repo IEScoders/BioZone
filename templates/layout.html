@@ -27,7 +27,7 @@
                     <div class="collapse navbar-collapse" id="navbarToggle">
                       <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" href="/">Home</a>
-                        <a class="nav-item nav-link" href="/analysis">Analysis</a>
+                        <!-- <a class="nav-item nav-link" href="/analysis">Analysis</a> -->
                         <!-- <a class="nav-item nav-link" href="/analysis">Analysis</a> -->
                       </div>
                       <!-- Navbar Right Side -->
@@ -69,16 +69,21 @@
                               
                               function show() {
                                     //取出指定縣市及鄉鎮市區的下拉選單的值
-                                    alert(SpeciesList.ReturnSelectSpecies('Crops', 'Pests'));
+                                    // alert(SpeciesList.ReturnSelectSpecies('Crops', 'Pests'));
+                                    if (SpeciesList.ReturnSelectSpecies('Crops', 'Pests') == 0) {
+                                      alert("請選擇害蟲");
+                                    }else{
+                                      window.location.href = SpeciesList.ReturnSelectSpecies('Crops', 'Pests');
+                                    }
                                 }
                                 
                                 var app = window.SpeciesList =
                                 {
                                   // Sources:  重要農業害蟲診斷圖鑑, 行政院農委會開放資料平台
                                   SpeciesArray: [ 
-                                                  ['Litchi', 'tetranychus', 'aleyrodidae', 'diaspididae', 'aphididae', 'pulvinaria_psidii', 'psylloidea', 'lepidoptera'],
-                                                  ['Guava', 'paracoccus_marginatus', 'aleurotuberculatus_guyavae', 'planococcus_minor', 'aleurodicus_dispersus', 'lepidoptera', 'aleurocanthus_spiniferus', 'saissetia_coffeae'],
-                                                  ['Papaya', 'paracoccus_marginatus', 'tetranychus_urticae', 'tetranychus', 'pseudococcidae'],
+                                                  ['litchi', 'tetranychus', 'aleyrodidae', 'diaspididae', 'aphididae', 'pulvinaria_psidii', 'psylloidea', 'lepidoptera'],
+                                                  ['guava', 'paracoccus_marginatus', 'aleurotuberculatus_guyavae', 'planococcus_minor', 'aleurodicus_dispersus', 'lepidoptera', 'aleurocanthus_spiniferus', 'saissetia_coffeae'],
+                                                  ['papaya', 'paracoccus_marginatus', 'tetranychus_urticae', 'tetranychus', 'pseudococcidae'],
                                                 ]
                                   ,              
                                   SpeciesInChn: [
@@ -127,7 +132,11 @@
                                   ReturnSelectSpecies: function (crop, pest) {
                                       var crop = document.getElementById(crop);
                                       var pest = document.getElementById(pest);
-                                      return "?crop="+crop.value+"&pest="+pest.value;
+                                      if (pest.value=='') {
+                                        return 0;
+                                      }else{
+                                        return "analysis?crop="+crop.value+"&pest="+pest.value;
+                                      }
                                   }
                               };
                               

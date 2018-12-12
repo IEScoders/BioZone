@@ -32,7 +32,7 @@
             <div class="collapse navbar-collapse" id="navbarToggle">
               <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link" href="/">Home</a>
-                <a class="nav-item nav-link" href="/analysis">Analysis</a>
+                <!-- <a class="nav-item nav-link" href="/analysis">Analysis</a> -->
                 <!-- <a class="nav-item nav-link" href="/analysis">Analysis</a> -->
               </div>
               <!-- Navbar Right Side -->
@@ -44,7 +44,7 @@
           </div>
         </nav>
       </header>
-<H1>Analysis</H1>
+<H1>Analysis - {{ species_name }}</H1>
 {% block content %}
     {{ script|safe }}
     {{ div|safe }}
