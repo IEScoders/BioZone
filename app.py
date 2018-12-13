@@ -7,7 +7,7 @@ from bokeh.embed import components
 import pandas as pd
 from bokeh.models import ColumnDataSource, HoverTool, GMapOptions, Slider, Select, CustomJS
 from bokeh.models import ColorBar, LinearColorMapper
-from bokeh.palettes import Viridis256
+# from bokeh.palettes import Viridis256
 # import math
 import numpy as np
 from bokeh.layouts import widgetbox
@@ -18,8 +18,8 @@ from bokeh.layouts import column,row
 # from bokeh.layouts import gridplot
 import jinja2
 
-template_dir = 'results/'
-loader = jinja2.FileSystemLoader(template_dir)
+results_dir = 'results/'
+loader = jinja2.FileSystemLoader(results_dir)
 environment = jinja2.Environment(loader=loader)
 
 
@@ -57,8 +57,8 @@ def read_data(year='2015',month='01',spec='solenopsis_invicta'):
 source=read_data()
 # low=math.floor(np.min(df['EI'].values))
 # high=math.ceil(np.max(df['EI'].values))
-mapper=LinearColorMapper(palette=Viridis256,low=0, high=1)
-color_bar=ColorBar(color_mapper=mapper,location=(0,0))
+# mapper=LinearColorMapper(palette=Viridis256,low=0, high=1)
+# color_bar=ColorBar(color_mapper=mapper,location=(0,0))
 
 
 
@@ -127,6 +127,7 @@ def analysis():
     #     source.data = new1.data
 
     # scientific_name=request.values['pest'] 
+    htmlfile="%s.html" % request.values['pest']
     pest_name=request.values['pest'].title()
     crop_name=request.values['crop'].title()
     # menu = Select(options=species_name,value="solenopsis_invicta", title='Select Bugs') 
@@ -153,58 +154,58 @@ def analysis():
     # layout = row(widgetbox(menu, yeardata_slider,monthdata_slider,crop,damage_slider,croparea,cropyield,cropprice,estimation),p)
 
     # script, div = components(layout)	
-    return render_template("analysis.html", app_title=app_title,species_name=pest_name,crop_name=crop_name)
+    return render_template("analysis.html", app_title=app_title,species_name=pest_name,crop_name=crop_name,htmlfile=htmlfile)
 
 # # # Analysis Page Route
-@app.route('/analysis_old')
-def analysis2():
+# @app.route('/analysis_old')
+# def analysis2():
 
-    def slider_callback(attr, old, new):
-        year=yeardata_slider.value
-        species=menu.value
-        # month=monthdata_slider.value
-        ei_csv=base_url+'{}-{}_{}.csv'.format(year,'{:02}'.format(4),species)
-        df=pd.read_csv(ei_csv)
-        df.columns=["Index","EI","id","x","y"]
-        x=df['x'].values
-        y=df['y'].values
-        EIvals=df['EI'].values
-        new1=ColumnDataSource(
-            data=dict(
-                x=x,
-                y=y,
-                EIvals=EIvals,
-            )
-        )
-        source.data = new1.data
+#     def slider_callback(attr, old, new):
+#         year=yeardata_slider.value
+#         species=menu.value
+#         # month=monthdata_slider.value
+#         ei_csv=base_url+'{}-{}_{}.csv'.format(year,'{:02}'.format(4),species)
+#         df=pd.read_csv(ei_csv)
+#         df.columns=["Index","EI","id","x","y"]
+#         x=df['x'].values
+#         y=df['y'].values
+#         EIvals=df['EI'].values
+#         new1=ColumnDataSource(
+#             data=dict(
+#                 x=x,
+#                 y=y,
+#                 EIvals=EIvals,
+#             )
+#         )
+#         source.data = new1.data
 
-    # scientific_name=request.values['pest'] 
-    pest_name=request.values['pest'].title()
-    menu = Select(options=species_name,value="solenopsis_invicta", title='Select Bugs') 
-    menu.on_change('value', slider_callback)
-    yeardata_slider = Slider(start=2010, end=2017, value=2010, step=1,title="Year")
-    yeardata_slider.on_change('value', slider_callback) 
-    monthdata_slider = Slider(start=1, end=12, value=1, step=1,title="Month")
-    monthdata_slider.on_change('value', slider_callback)
-    crop =  Div(text="""<hr><p><h5>Possible Loss for <b>%s</b>:</h5></p>""" % request.values['crop'].title()) 
-    damage_slider = Slider(start=0, end=100, value=50, step=1,title="Loss Percentage")
-    # damage_slider.on_change('value', price_callback) 
-    croparea=TextInput(id="area", value="10", title="Farm Area (ha)")
-    cropyield=TextInput(id="yield", value="20000", title="Yield (kg/ha)")
-    cropprice=TextInput(id="price", value="50", title="Price (NT$/kg)")
-    loss=float(damage_slider.value)/100*float(croparea.value)*float(cropyield.value)*float(cropprice.value)
-    estimation = Div(text="""<p align="right" style="font-size:16px"><b>%s</b></p>""" % 'NT${:,.0f}'.format(loss))
+#     # scientific_name=request.values['pest'] 
+#     pest_name=request.values['pest'].title()
+#     menu = Select(options=species_name,value="solenopsis_invicta", title='Select Bugs') 
+#     menu.on_change('value', slider_callback)
+#     yeardata_slider = Slider(start=2010, end=2017, value=2010, step=1,title="Year")
+#     yeardata_slider.on_change('value', slider_callback) 
+#     monthdata_slider = Slider(start=1, end=12, value=1, step=1,title="Month")
+#     monthdata_slider.on_change('value', slider_callback)
+#     crop =  Div(text="""<hr><p><h5>Possible Loss for <b>%s</b>:</h5></p>""" % request.values['crop'].title()) 
+#     damage_slider = Slider(start=0, end=100, value=50, step=1,title="Loss Percentage")
+#     # damage_slider.on_change('value', price_callback) 
+#     croparea=TextInput(id="area", value="10", title="Farm Area (ha)")
+#     cropyield=TextInput(id="yield", value="20000", title="Yield (kg/ha)")
+#     cropprice=TextInput(id="price", value="50", title="Price (NT$/kg)")
+#     loss=float(damage_slider.value)/100*float(croparea.value)*float(cropyield.value)*float(cropprice.value)
+#     estimation = Div(text="""<p align="right" style="font-size:16px"><b>%s</b></p>""" % 'NT${:,.0f}'.format(loss))
 
-    map_options = GMapOptions(lat=23.5, lng=121.0, map_type="terrain", zoom=7)
-    p = gmap("AIzaSyDqpIUEhtFIX53RPKR5QX0gi8QdyRZh0NQ", map_options, title="EI Plot",plot_width=500, plot_height=500)
-    my_hover = HoverTool()
-    my_hover.tooltips = [('EI Value', '@EIvals'), ('Latitude', '@y'), ('Longitude', '@x')]
-    p.circle('x', 'y',source=source, size=8, line_color="black", fill_color={'field':'EIvals','transform':mapper}, fill_alpha=0.5)
-    p.add_tools(my_hover)
-    layout = row(widgetbox(menu, yeardata_slider,monthdata_slider,crop,damage_slider,croparea,cropyield,cropprice,estimation),p)
+#     map_options = GMapOptions(lat=23.5, lng=121.0, map_type="terrain", zoom=7)
+#     p = gmap("AIzaSyDqpIUEhtFIX53RPKR5QX0gi8QdyRZh0NQ", map_options, title="EI Plot",plot_width=500, plot_height=500)
+#     my_hover = HoverTool()
+#     my_hover.tooltips = [('EI Value', '@EIvals'), ('Latitude', '@y'), ('Longitude', '@x')]
+#     p.circle('x', 'y',source=source, size=8, line_color="black", fill_color={'field':'EIvals','transform':mapper}, fill_alpha=0.5)
+#     p.add_tools(my_hover)
+#     layout = row(widgetbox(menu, yeardata_slider,monthdata_slider,crop,damage_slider,croparea,cropyield,cropprice,estimation),p)
 
-    script, div = components(layout)	
-    return render_template("analysis_old.html", script=script, div=div, app_title=app_title,species_name=pest_name)
+#     script, div = components(layout)	
+#     return render_template("analysis_old.html", script=script, div=div, app_title=app_title,species_name=pest_name)
 
 
 if __name__=="__main__":
