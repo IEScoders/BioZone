@@ -1,54 +1,66 @@
-<!doctype html>
-<html>
-<head>
-    <link
-    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.16.min.css"
-    rel="stylesheet" type="text/css">
-<link
-    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.16.min.css"
-    rel="stylesheet" type="text/css">
-
-<script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.16.min.js"></script>
-<script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.16.min.js"></script>
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-<link rel="stylesheet" type="text/css" href=" {{ url_for('static', filename='main.css') }}">
-
-{% if title %}
-    <title>{{ app_title }} - {{ title }}</title>
-{% else %}
-    <title>{{ app_title }}</title>
-{% endif %}
-</head>
-<body>
-    <header class="site-header">
-        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-          <div class="container">
-            <a class="navbar-brand mr-4" href="/">BIOZONE</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarToggle">
-              <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" href="/about">About Us</a>
-                <a class="nav-item nav-link" href="/howtouse">How to Use</a>
-                <a class="nav-item nav-link" href="/ei_explain">What is EI</a>
-                <a class="nav-item nav-link" href="/links">Links</a>
-              </div>
-              <!-- Navbar Right Side -->
-              <div class="navbar-nav">
-                <a class="nav-item nav-link" href="/english">English</a>
-                <!-- <a class="nav-item nav-link" href="/chinese">中文</a> -->
-              </div>
-            </div>
-          </div>
-        </nav>
-      </header>
-<H1>Analysis - {{ species_name }}</H1>
+{% extends "layout.html" %}
 {% block content %}
-    {{ script|safe }}
-    {{ div|safe }}
+<H1>Analysis - {{ species_name }}</H1>
+<!-- please include a map here -->
 {% endblock content %}
-</body>
-</html>
+
+{% block calculator %}
+<hr>
+<p>
+  <h5>Possible Loss for <b>{{ crop_name }}</b>:</h5>
+  <button type="button" class="btn btn-warning btn-lg"><b><span id="Output">NT$ <span id="Loss">3</span></span></b></button>
+  <hr>
+  <span id="SliderValLabel">損失比例: <span id="SliderVal">3</span> %</span>
+  <div class="slidecontainer">
+    <input type="range" min="0" max="100" value="50" class="slider" id="LossRation">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend"><span class="input-group-text">總種植面積</span></div>
+    <input type="text" class="form-control" placeholder="50" aria-label="請輸入種植面積" id="area">
+    <div class="input-group-append"><span class="input-group-text">公頃</span></div>
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend"><span class="input-group-text">每公頃產量</span></div>
+    <input type="text" class="form-control" placeholder="50" aria-label="請輸入單位產量" id="yield">
+    <div class="input-group-append"><span class="input-group-text">公斤</span></div>
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend"><span class="input-group-text">每公斤價格</span></div>
+    <input type="text" class="form-control" placeholder="50" aria-label="請輸入單位價格" id="price">
+    <div class="input-group-append"><span class="input-group-text">新台幣</span></div>
+  </div>
+</p>
+<script type="text/javascript">
+  var slider = document.getElementById("LossRation");
+  var area = document.getElementById("area");
+  var yield = document.getElementById("yield");
+  var price = document.getElementById("price");
+  var view = document.getElementById("SliderVal");
+  var output = document.getElementById("Loss");
+  view.innerHTML = slider.value; // Display the default slider value
+
+  function formatMoney(n, c, d, t) {
+    var c = isNaN(c = Math.abs(c)) ? 2 : c,
+      d = d == undefined ? "." : d,
+      t = t == undefined ? "," : t,
+      s = n < 0 ? "-" : "",
+      i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+      j = (j = i.length) > 3 ? j % 3 : 0;
+
+    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+  }
+
+  // Update the current slider value (each time you drag the slider handle)
+  function calculate(){
+    loss = slider.value / 100 * (area.value? area.value:area.placeholder) * (yield.value ? yield.value:yield.placeholder) * (price.value ? price.value:price.placeholder);
+    output.innerHTML = formatMoney(loss,0,'.',',');
+  }
+  slider.oninput = function() {
+    view.innerHTML = this.value;
+    calculate();
+  } 
+  area.oninput = function() {calculate(); } 
+  yield.oninput = function() {calculate(); } 
+  price.oninput = function() {calculate(); } 
+</script>
+{% endblock calculator %}

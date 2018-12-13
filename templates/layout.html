@@ -48,29 +48,23 @@
                       <div class="col-md-4">
                         <div class="navbar-nav">
                             <!-- <a class="nav-item nav-link" href="/english">English</a> -->
-                            <ul class="list-group">
+                            <!-- <ul class="list-group"> -->
                               <!-- <a href="/howtouse" class="list-group-item list-group-item-action list-group-item-light">How to use the BioZone</a> -->
                               <!-- <a href="/ei_explain" class="list-group-item list-group-item-action list-group-item-light">What is EI?</a> -->
                               <!-- <li class="list-group-item list-group-item-light" href="/maps">Maps</li> -->
                               <!-- <li class="list-group-item list-group-item-light">Other Results</li>
                               <li class="list-group-item list-group-item-light">Crops Affected</li> -->
-                            </ul>
+                            <!-- </ul> -->
                             <p><ul class="list-group">
                               <h5>Results and Analysis</h5>
-                              <script type="text/javascript">
+                              <script type="text/javascript"> // Script modified form https://dotblogs.com.tw/lastsecret/2010/11/27/19757
                                 window.onload = function () {
-                                    //當頁面載完之後，用SpeciesList.Initialize()，
-                                    //傳入要綁定的縣市下拉選單ID及鄉鎮市區下拉選單ID
                                     SpeciesList.Initialize('Crops', 'Pests');
-                              
-                                    //後面四個參數分別是兩個下拉選單的預設文字跟值
-                                  //  SpeciesList.Initialize('縣市2', '鄉鎮市區2', 'Please Select City', '0', 'Please Select Area', '0');
+                                    calculate();
                               }
                               
                               
                               function show() {
-                                    //取出指定縣市及鄉鎮市區的下拉選單的值
-                                    // alert(SpeciesList.ReturnSelectSpecies('Crops', 'Pests'));
                                     if (SpeciesList.ReturnSelectSpecies('Crops', 'Pests') == 0) {
                                       alert("請選擇害蟲");
                                     }else{
@@ -80,7 +74,7 @@
                                 
                                 var app = window.SpeciesList =
                                 {
-                                  // Sources:  重要農業害蟲診斷圖鑑, 行政院農委會開放資料平台
+                                  // Sources:  行政院農委會開放資料平台重要農業害蟲診斷圖鑑(https://data.coa.gov.tw/Query/ServiceDetail.aspx?id=176)
                                   SpeciesArray: [ 
                                                   ['litchi', 'tetranychus', 'aleyrodidae', 'diaspididae', 'aphididae', 'pulvinaria_psidii', 'psylloidea', 'lepidoptera'],
                                                   ['guava', 'paracoccus_marginatus', 'aleurotuberculatus_guyavae', 'planococcus_minor', 'aleurodicus_dispersus', 'lepidoptera', 'aleurocanthus_spiniferus', 'saissetia_coffeae'],
@@ -148,6 +142,9 @@
                               </select>
                               <input type="button" class="btn btn-success" onclick="show()" value="Show" />
                             </ul></p>
+                            {% if crop_name %}
+                              {% block calculator %}{% endblock %}
+                            {% endif %}
                         </div> 
                         <!-- <div class="content-section">
                           <h6>Results and Analysis</h6>

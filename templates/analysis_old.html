@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.16.min.css"
+    rel="stylesheet" type="text/css">
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.16.min.css"
+    rel="stylesheet" type="text/css">
+
+<script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.16.min.js"></script>
+<script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.16.min.js"></script>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href=" {{ url_for('static', filename='main.css') }}">
+
+{% if title %}
+    <title>{{ app_title }} - {{ title }}</title>
+{% else %}
+    <title>{{ app_title }}</title>
+{% endif %}
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+          <div class="container">
+            <a class="navbar-brand mr-4" href="/">BIOZONE</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggle">
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" href="/about">About Us</a>
+                <a class="nav-item nav-link" href="/howtouse">How to Use</a>
+                <a class="nav-item nav-link" href="/ei_explain">What is EI</a>
+                <a class="nav-item nav-link" href="/links">Links</a>
+              </div>
+              <!-- Navbar Right Side -->
+              <div class="navbar-nav">
+                <a class="nav-item nav-link" href="/english">English</a>
+                <!-- <a class="nav-item nav-link" href="/chinese">中文</a> -->
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+<H1>Analysis - {{ species_name }}</H1>
+{% block content %}
+    <!-- {{ script|safe }}
+    {{ div|safe }} -->
+{% endblock content %}
+</body>
+</html>
