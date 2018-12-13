@@ -16,7 +16,11 @@ from bokeh.models.widgets import Dropdown, TextInput, Div, Button
 from bokeh.layouts import column,row
 # from numpy.random import random 
 # from bokeh.layouts import gridplot
+import jinja2
 
+template_dir = 'results/'
+loader = jinja2.FileSystemLoader(template_dir)
+environment = jinja2.Environment(loader=loader)
 
 
 species_csv=pd.read_csv("species.csv")
