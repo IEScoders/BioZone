@@ -104,6 +104,8 @@ def analysis():
     species_csv=pd.read_csv("species.csv")
     pest_index=species_csv.index[species_csv['scientific_name']==request.values['pest']]
     pest_name=species_csv['common_name_c'][pest_index].values[0]
+    pest_image=species_csv['image'][pest_index].values[0]
+    pest_desc=species_csv['desc'][pest_index].values[0]
     pest_latin=species_csv['scientific_name'][pest_index].values[0].replace('_',' ')
     if request.values['crop']:
         crops_csv=pd.read_csv("CropsPests.csv")
@@ -121,7 +123,7 @@ def analysis():
     # pest_name=request.values['pest'].title()
     # crop_name=request.values['crop'].title()
     
-    return render_template("analysis.html", app_title=app_title,pest_name=pest_name,pest_latin=pest_latin,crop_name=crop_name,crop_yield=crop_yield,crop_price=crop_price,htmlfile=htmlfile)
+    return render_template("analysis.html", app_title=app_title,pest_name=pest_name,pest_latin=pest_latin,pest_image=pest_image,pest_desc=pest_desc,crop_name=crop_name,crop_yield=crop_yield,crop_price=crop_price,htmlfile=htmlfile)
 
 # # # Analysis Page Route
 # @app.route('/analysis_old')

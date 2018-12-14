@@ -1,6 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
-<H3>{{ pest_name }}(<i>{{ pest_latin}}</i>)與天敵種之 EI 值圖</H3>
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+</script>
+<script>src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"</script>
+<H3><span data-toggle="popover" title="{{ pest_name }}" data-content="<img src='{{ pest_image }}' width='300' />{{ pest_desc }}">{{ pest_name }}(<i>{{ pest_latin}}</i>)</span>與天敵種之 EI 值圖</H3>
+<!-- <button type="button" class="btn btn-lg btn-danger" >Click to toggle popover</button> -->
+<script>
+  $(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+      html: true,
+      trigger: 'hover',
+    });
+  });
+</script>
 {% include htmlfile %}
 
 {% endblock content %}

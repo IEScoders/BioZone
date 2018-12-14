@@ -118,4 +118,6 @@ body {
     cursor: pointer; /* Cursor on hover */
   }
 
-  
+  .popover{
+    max-width: 325px;
+  } 
