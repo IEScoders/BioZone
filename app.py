@@ -14,6 +14,10 @@ from bokeh.layouts import widgetbox
 from bokeh.models.widgets import Dropdown, TextInput, Div, Button
 # from bokeh.io import curdoc
 from bokeh.layouts import column,row
+import sys  
+
+reload(sys)  
+sys.setdefaultencoding('utf8')
 # from numpy.random import random 
 # from bokeh.layouts import gridplot
 
