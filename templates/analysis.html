@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<H1>Analysis - {{ species_name }}</H1>
+<H3>{{ pest_name }}(<i>{{ pest_latin}}</i>)與天敵種之 EI 值圖</H3>
 {% include htmlfile %}
 
 {% endblock content %}
@@ -22,12 +22,12 @@
   </div>
   <div class="input-group mb-3">
     <div class="input-group-prepend"><span class="input-group-text">每公頃產量</span></div>
-    <input type="text" class="form-control" placeholder="50" aria-label="請輸入單位產量" id="yield">
+    <input type="text" class="form-control" placeholder={{crop_yield}} aria-label="請輸入單位產量" id="yield">
     <div class="input-group-append"><span class="input-group-text">公斤</span></div>
   </div>
   <div class="input-group mb-3">
     <div class="input-group-prepend"><span class="input-group-text">每公斤價格</span></div>
-    <input type="text" class="form-control" placeholder="50" aria-label="請輸入單位價格" id="price">
+    <input type="text" class="form-control" placeholder={{crop_price}} aria-label="請輸入單位價格" id="price">
     <div class="input-group-append"><span class="input-group-text">新台幣</span></div>
   </div>
 </p>
