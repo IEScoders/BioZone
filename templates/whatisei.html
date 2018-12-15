@@ -1,6 +1,32 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>What is EI (eco-climate index)?</h1>
-<h2>什麼是氣候環境指數?</h2>
-<p>氣候環境指數(EI) 是由薩瑟斯(R.W.Sutherst)與梅沃德(G.F.Maywald) 兩位博士於1985年發表的概念。根據氣候參數包含溫度(T)、濕度(M)、日照(D)等參數, 結合某一物種的生存環境參數來計算出EI值, 用以評估該地區的氣候環境是否適合此物種生存發展。</p>
+<h1>What is EI (Eco-climate Index)?</h1>
+
+<p>氣候環境指數（EI）是由薩瑟斯（R.W.Sutherst）與梅沃德（G.F.Maywald）兩位博士於 1985 年發表的概念。根據氣候參數包含溫度（T）、濕度（M）、日照（D）等參數, 結合某一物種的生存環境參數來計算出 EI 值, 用以評估該地區的氣候環境是否適合此物種生存發展。</p>
+
+<p>BioZone 配合大眾使用習慣，使用簡化後的 EI 模型，其中僅考慮地面溫度（T）與降雨量（M）。這些環境資料主要擷取自中央氣象局全台 500 多個氣象站監測資料。物種適合生存的溫濕度環境參數主要取自農委會動植物防疫局與國際應用生物科學中心（CABI）所提供的資料庫。</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+                <figure><img src="https://raw.githubusercontent.com/IEScoders/BioZone/master/templates/howtousebiozone1.png" height='150px' width='100%'/></figure>
+                <h3>溫度參數 TI = Tmax · Tmin</h3>
+                <p>dv0: 生物無法在低於此溫度生存</p>
+                <p>dv1: 生物在低於此溫度較難發展</p>
+                <p>dv2: 生物在高於此溫度較難發展</p>
+                <p>dv3: 生物無法在高於此溫度生存</p>
+        </div>
+        <div class="col-sm-6">
+                <figure><img src="https://raw.githubusercontent.com/IEScoders/BioZone/master/templates/howtousebiozone2.png" height='150px' width='100%'/></figure>
+                <h3>濕度參數MI </h3>
+                <p>sm0: 生物無法在低於此濕度生存</p>
+                <p>sm1: 生物在低於此濕度較難發展</p>
+                <p>sm2: 生物在高於此濕度較難發展</p>
+                <p>sm3: 生物無法在高於此濕度生存</p>
+                <p></p>
+        </div>
+    </div>
+</div>
+<h3>簡化後氣候環境指數 EI = TI · MI</h3>
+<figure><img src="https://raw.githubusercontent.com/IEScoders/BioZone/master/templates/howtousebiozone3.png" width='100%'/></figure>
 {% endblock content %}
