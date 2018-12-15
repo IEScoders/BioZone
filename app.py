@@ -14,10 +14,10 @@ from bokeh.layouts import widgetbox
 from bokeh.models.widgets import Dropdown, TextInput, Div, Button
 # from bokeh.io import curdoc
 from bokeh.layouts import column,row
-import sys  
+# import sys  
 
-reload(sys)  
-sys.setdefaultencoding('utf8')
+# reload(sys)  
+# sys.setdefaultencoding('utf8')
 # from numpy.random import random 
 # from bokeh.layouts import gridplot
 
@@ -124,10 +124,19 @@ def analysis():
     
 
     htmlfile="%s.html" % request.values['pest']
+    pred_html=''
+    pest_predators=species_csv['predators'][pest_index].values[0]
+    if not isinstance(pest_predators,float) :
+        pest_predators = pest_predators.split(';')
+        pred_colors=["blue","green"]
+        for i in range(len(pest_predators)):
+            pred_index=species_csv.index[species_csv['scientific_name']==pest_predators[i]]
+            pred_name=species_csv['common_name_c'][pred_index].values[0]
+            pred_html = pred_html + '<font color="'+pred_colors[i]+'"><b>'+pred_name+'</b></font></br>'
     # pest_name=request.values['pest'].title()
     # crop_name=request.values['crop'].title()
     
-    return render_template("analysis.html", app_title=app_title,pest_name=pest_name,pest_latin=pest_latin,pest_image=pest_image,pest_desc=pest_desc,crop_name=crop_name,crop_yield=crop_yield,crop_price=crop_price,htmlfile=htmlfile)
+    return render_template("analysis.html", app_title=app_title,pest_name=pest_name,pest_latin=pest_latin,pest_image=pest_image,pest_desc=pest_desc,crop_name=crop_name,crop_yield=crop_yield,crop_price=crop_price,pred_html=pred_html,htmlfile=htmlfile)
 
 # # # Analysis Page Route
 # @app.route('/analysis_old')

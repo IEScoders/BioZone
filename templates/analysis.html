@@ -6,7 +6,9 @@
         crossorigin="anonymous">
 </script>
 <script>src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"</script>
-<H3><span data-toggle="popover" title="{{ pest_name }}" data-content="<img src='{{ pest_image }}' width='300' />{{ pest_desc }}">{{ pest_name }}(<i>{{ pest_latin}}</i>)</span>與天敵種之 EI 值圖</H3>
+<H3><a href="#" data-toggle="popover" title="{{ pest_name }}" data-content="<img src='{{ pest_image }}' width='300' />{{ pest_desc }}">{{ pest_name }}(<i>{{ pest_latin}}</i>)</a>
+  {% if pred_html %} 與 <a href="#" data-toggle="popover" title="{{ pest_name }}之天敵種" data-content='{{ pred_html }}'>天敵種</a> {% endif %}
+  之 EI 值圖</H3>
 <!-- <button type="button" class="btn btn-lg btn-danger" >Click to toggle popover</button> -->
 <script>
   $(document).ready(function(){
